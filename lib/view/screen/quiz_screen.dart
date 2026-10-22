@@ -94,7 +94,10 @@ class QuizScreen extends GetView<QuizController> {
                                   : Colors.black,
                         ),
                       ),
-                      onTap: () => controller.selectAnswer(index),
+                      onTap:
+                          controller.hasAnswered.value
+                              ? null
+                              : () => controller.selectAnswer(index),
                     );
                   },
                 ),
@@ -115,14 +118,31 @@ class QuizScreen extends GetView<QuizController> {
                 return const SizedBox.shrink();
               }
 
-              return Text(
-                controller.isCorrectAnswer
-                    ? 'Correct answer!'
-                    : 'Wrong answer!',
-                style: TextStyle(
-                  color: controller.isCorrectAnswer ? Colors.green : Colors.red,
-                  fontSize: 18,
-                ),
+              final correctAnswer =
+                  controller
+                      .questions[controller.currentQuestionIndex.value]
+                      .options[controller
+                      .questions[controller.currentQuestionIndex.value]
+                      .answer];
+
+              return Column(
+                children: [
+                  Text(
+                    controller.isCorrectAnswer
+                        ? 'Correct answer!'
+                        : 'Wrong answer!',
+                    style: TextStyle(
+                      color:
+                          controller.isCorrectAnswer
+                              ? Colors.green
+                              : Colors.red,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  if (!controller.isCorrectAnswer)
+                    Text('Correct answer: $correctAnswer'),
+                ],
               );
             }),
 
