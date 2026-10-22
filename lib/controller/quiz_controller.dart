@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
-
+import 'dart:async';
 import '../data/datasource/static/question_data.dart';
 import '../data/model/question_model.dart';
+import '../core/Constant/app_routes.dart';
 
 class QuizController extends GetxController {
   final List<QuestionModel> questions = questionData;
@@ -17,6 +18,15 @@ class QuizController extends GetxController {
 
   final Map<int, int> userAnswers = {};
 
+  final RxInt remainingSeconds = 5.obs;
+  Timer? questionTimer;
+
+  @override
+  void onInit() {
+    super.onInit();
+    startQuestionTimer();
+  }
+
   String get currentQuestion {
     return questions[currentQuestionIndex.value].question;
   }
@@ -26,6 +36,7 @@ class QuizController extends GetxController {
       currentQuestionIndex.value++;
       selectedAnswer.value = null;
       hasAnswered.value = false;
+      startQuestionTimer();
     }
   }
 
@@ -50,6 +61,7 @@ class QuizController extends GetxController {
         userAnswers.containsKey(questions[currentQuestionIndex.value].id)) {
       return;
     }
+    questionTimer?.cancel();
     userAnswers[questions[currentQuestionIndex.value].id] =
         selectedAnswer.value!;
     hasAnswered.value = true;
@@ -66,10 +78,47 @@ class QuizController extends GetxController {
   }
 
   void restartQuiz() {
+    questionTimer?.cancel();
+
     currentQuestionIndex.value = 0;
     selectedAnswer.value = null;
     hasAnswered.value = false;
     score.value = 0;
     userAnswers.clear();
+
+    startQuestionTimer();
+  }
+
+  void startQuestionTimer() {
+    questionTimer?.cancel();
+    remainingSeconds.value = 5;
+
+    questionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (hasAnswered.value) {
+        timer.cancel();
+        return;
+      }
+
+      if (remainingSeconds.value > 1) {
+        remainingSeconds.value--;
+      } else {
+        timer.cancel();
+        remainingSeconds.value = 0;
+
+        if (isLastQuestion) {
+          hasAnswered.value = true;
+          Get.offNamed(AppRoutes.result);
+          return;
+        }
+        selectedAnswer.value = null;
+        nextQuestion();
+      }
+    });
+  }
+
+  @override
+  void onClose() {
+    questionTimer?.cancel();
+    super.onClose();
   }
 }

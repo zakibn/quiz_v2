@@ -46,7 +46,20 @@ class QuizScreen extends GetView<QuizController> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-
+            const SizedBox(height: 12),
+            Obx(
+              () => Text(
+                'Time remaining: ${controller.remainingSeconds.value}s',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color:
+                      controller.remainingSeconds.value <= 2
+                          ? Colors.red
+                          : Colors.black,
+                ),
+              ),
+            ),
             const SizedBox(height: 20),
             Obx(
               () => Text(
