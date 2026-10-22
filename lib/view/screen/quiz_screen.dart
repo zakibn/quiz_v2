@@ -35,6 +35,19 @@ class QuizScreen extends GetView<QuizController> {
                 'of ${controller.questions.length}',
               ),
             ),
+            const SizedBox(height: 12),
+
+            Obx(
+              () => LinearProgressIndicator(
+                value:
+                    (controller.currentQuestionIndex.value + 1) /
+                    controller.questions.length,
+                minHeight: 8,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+
+            const SizedBox(height: 20),
             Obx(
               () => Text(
                 controller.currentQuestion,
