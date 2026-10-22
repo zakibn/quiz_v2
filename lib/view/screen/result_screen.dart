@@ -35,6 +35,37 @@ class ResultScreen extends GetView<QuizController> {
                 ),
               );
             }),
+            Obx(() {
+              final percentage =
+                  controller.questions.isEmpty
+                      ? 0
+                      : (controller.score.value /
+                              controller.questions.length *
+                              100)
+                          .round();
+
+              String message;
+
+              if (percentage == 100) {
+                message = 'Excellent! Perfect score!';
+              } else if (percentage >= 70) {
+                message = 'Great job! Keep it up!';
+              } else if (percentage >= 50) {
+                message = 'Good effort! You can do better!';
+              } else {
+                message = 'Keep practicing! Never give up!';
+              }
+
+              return Text(
+                message,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              );
+            }),
+            const SizedBox(height: 20),
             const SizedBox(height: 20),
             Obx(
               () => SizedBox(
@@ -50,6 +81,7 @@ class ResultScreen extends GetView<QuizController> {
                 ),
               ),
             ),
+
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
