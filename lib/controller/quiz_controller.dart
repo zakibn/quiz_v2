@@ -91,7 +91,7 @@ class QuizController extends GetxController {
 
   void startQuestionTimer() {
     questionTimer?.cancel();
-    remainingSeconds.value = 5;
+    remainingSeconds.value = 10;
 
     questionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (hasAnswered.value) {

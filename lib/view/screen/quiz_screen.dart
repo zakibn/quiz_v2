@@ -96,21 +96,40 @@ class QuizScreen extends GetView<QuizController> {
                             .questions[controller.currentQuestionIndex.value]
                             .options[index];
 
-                    return ListTile(
-                      //title: Text(option),
-                      title: Text(
-                        option,
-                        style: TextStyle(
-                          color:
-                              controller.selectedAnswer.value == index
-                                  ? Colors.blue
-                                  : Colors.black,
-                        ),
+                    final isSelected = controller.selectedAnswer.value == index;
+                    final isCorrect =
+                        controller
+                            .questions[controller.currentQuestionIndex.value]
+                            .answer ==
+                        index;
+
+                    final borderColor =
+                        !controller.hasAnswered.value
+                            ? (isSelected ? Colors.blue : Colors.grey)
+                            : isCorrect
+                            ? Colors.green
+                            : isSelected
+                            ? Colors.red
+                            : Colors.grey;
+
+                    return Container(
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: borderColor, width: 2),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      onTap:
-                          controller.hasAnswered.value
-                              ? null
-                              : () => controller.selectAnswer(index),
+                      child: ListTile(
+                        title: Text(
+                          option,
+                          style: TextStyle(
+                            color: isSelected ? Colors.blue : Colors.black,
+                          ),
+                        ),
+                        onTap:
+                            controller.hasAnswered.value
+                                ? null
+                                : () => controller.selectAnswer(index),
+                      ),
                     );
                   },
                 ),
