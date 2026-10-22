@@ -16,6 +16,7 @@ import 'Binding/quiz_binding.dart';
 import 'core/Constant/app_routes.dart';
 import 'view/screen/quiz_screen.dart';
 import 'view/screen/result_screen.dart';
+import 'view/screen/review_screen.dart';
 
 List<GetPage<dynamic>>? routes = [
   GetPage(
@@ -24,4 +25,5 @@ List<GetPage<dynamic>>? routes = [
     binding: QuizBinding(),
   ),
   GetPage(name: AppRoutes.result, page: () => const ResultScreen()),
+  GetPage(name: AppRoutes.review, page: () => const ReviewScreen()),
 ];

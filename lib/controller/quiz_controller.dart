@@ -15,6 +15,8 @@ class QuizController extends GetxController {
 
   final RxInt score = 0.obs;
 
+  final Map<int, int> userAnswers = {};
+
   String get currentQuestion {
     return questions[currentQuestionIndex.value].question;
   }
@@ -46,7 +48,8 @@ class QuizController extends GetxController {
     if (selectedAnswer.value == null || hasAnswered.value) {
       return;
     }
-
+    userAnswers[questions[currentQuestionIndex.value].id] =
+        selectedAnswer.value!;
     hasAnswered.value = true;
 
     final currentQuestion = questions[currentQuestionIndex.value];
@@ -65,5 +68,6 @@ class QuizController extends GetxController {
     selectedAnswer.value = null;
     hasAnswered.value = false;
     score.value = 0;
+    userAnswers.clear();
   }
 }

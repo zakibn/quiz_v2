@@ -85,6 +85,13 @@ class ResultScreen extends GetView<QuizController> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+                Get.toNamed(AppRoutes.review);
+              },
+              child: const Text('Review Answers'),
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () {
                 controller.restartQuiz();
                 Get.offNamed(AppRoutes.quiz);
               },
