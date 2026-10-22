@@ -45,7 +45,9 @@ class QuizController extends GetxController {
   }
 
   void confirmAnswer() {
-    if (selectedAnswer.value == null || hasAnswered.value) {
+    if (selectedAnswer.value == null ||
+        hasAnswered.value ||
+        userAnswers.containsKey(questions[currentQuestionIndex.value].id)) {
       return;
     }
     userAnswers[questions[currentQuestionIndex.value].id] =
